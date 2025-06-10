@@ -35,9 +35,9 @@ jobs:
         run: |
           $WSL_IP = (wsl -u root hostname -I).Split()[0].Trim()
           $COMPOSE_PATH = (wsl wslpath -a .\\compose.yml).Trim()
-          wsl -u root ping -c 5 10.01.0.42
-          wsl -u root ping -c 5 10.42.0.24
-          wsl -u root nc -vz 10.01.0.42 80
-          wsl -u root nc -vz 10.42.0.24 80
-          wsl -u root curl -I 10.01.0.42:80
-          wsl -u root curl -I 10.42.0.24:80
+          wsl -u root ping -c 5 10.1.0.42
+          wsl -u root ping -c 5 10.1.0.24
+          wsl -u root nc -vz 10.1.0.42 80
+          wsl -u root nc -vz 10.1.0.24 80
+          wsl -u root curl -I 10.1.0.42:80
+          wsl -u root curl -I 10.1.0.24:80
