@@ -1,5 +1,5 @@
 on:
-    push:
+  push:
   
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -35,9 +35,25 @@ jobs:
         run: |
           $WSL_IP = (wsl -u root hostname -I).Split()[0].Trim()
           $COMPOSE_PATH = (wsl wslpath -a .\\compose.yml).Trim()
+          wsl echo -e "Docker journal logs:"
+          wsl -u root journalctl -u docker
+          wsl echo -e "\n\n\nDocker network list:"
+          wsl -u root docker network ls
+          wsl echo -e "\n\n\nDocker container list:"
+          wsl -u root docker compose -f $COMPOSE_PATH ps
+          wsl echo -e "\n\n\nIP address list:"
+          wsl -u root ip addr show
+          wsl echo -e "\n\n\nRoute list:"
+          wsl -u root ip route show
+          wsl echo -e "\n\n\nPinging alpha:"
           wsl -u root ping -c 5 10.1.0.42
+          wsl echo -e "\n\n\nPinging beta:"
           wsl -u root ping -c 5 10.1.0.24
+          wsl echo -e "\n\n\nConnecting to alpha:"
           wsl -u root nc -vz 10.1.0.42 80
+          wsl echo -e "\n\n\nConnecting to beta:"
           wsl -u root nc -vz 10.1.0.24 80
+          wsl echo -e "\n\n\nDownloading from alpha:"
           wsl -u root curl -I 10.1.0.42:80
+          wsl echo -e "\n\n\nDownloading from beta:"
           wsl -u root curl -I 10.1.0.24:80
