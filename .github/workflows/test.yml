@@ -30,13 +30,13 @@ jobs:
             wsl -u root sysctl -w net.ipv4.ip_forward=1
             wsl -u root sh -c "curl -fsSL https://get.docker.com | sh"
             wsl -u root docker compose -f $COMPOSE_PATH up --build --detach
-            route add 10.1.0.0 mask 255.255.255.0 $WSL_IP
-            wsl -u root iptables -t filter -A DOCKER-USER -s $LOCAL_IP -d 10.1.0.0/24 -j LOG --log-prefix "TEST ACCEPT FORWARD: "
-            wsl -u root iptables -t filter -A DOCKER-USER -s $LOCAL_IP -d 10.1.0.0/24 -j ACCEPT
-            wsl -u root iptables -t filter -A DOCKER-USER -d $LOCAL_IP -s 10.1.0.0/24 -j LOG --log-prefix "TEST ACCEPT BACKWARD: "
-            wsl -u root iptables -t filter -A DOCKER-USER -d $LOCAL_IP -s 10.1.0.0/24 -j ACCEPT
-            wsl -u root iptables -t nat -A POSTROUTING -s $LOCAL_IP -d 10.1.0.0/24 -j LOG --log-prefix "TEST MASQUERADE: "
-            wsl -u root iptables -t nat -A POSTROUTING -s $LOCAL_IP -d 10.1.0.0/24 -j MASQUERADE
+            route add 10.21.0.0 mask 255.255.255.0 $WSL_IP
+            wsl -u root iptables -t filter -A DOCKER-USER -s $LOCAL_IP -d 10.21.0.0/24 -j LOG --log-prefix "TEST ACCEPT FORWARD: "
+            wsl -u root iptables -t filter -A DOCKER-USER -s $LOCAL_IP -d 10.21.0.0/24 -j ACCEPT
+            wsl -u root iptables -t filter -A DOCKER-USER -d $LOCAL_IP -s 10.21.0.0/24 -j LOG --log-prefix "TEST ACCEPT BACKWARD: "
+            wsl -u root iptables -t filter -A DOCKER-USER -d $LOCAL_IP -s 10.21.0.0/24 -j ACCEPT
+            wsl -u root iptables -t nat -A POSTROUTING -s $LOCAL_IP -d 10.21.0.0/24 -j LOG --log-prefix "TEST MASQUERADE: "
+            wsl -u root iptables -t nat -A POSTROUTING -s $LOCAL_IP -d 10.21.0.0/24 -j MASQUERADE
             New-NetFirewallRule -DisplayName "Allow All to WSL2" -Direction Inbound -Action Allow -RemoteAddress $WSL_IP -Protocol Any -Profile Any -Enabled True
             New-NetFirewallRule -DisplayName "Allow All to WSL2" -Direction Outbound -Action Allow -RemoteAddress $WSL_IP -Protocol Any -Profile Any -Enabled True
             New-NetFirewallRule -DisplayName "Allow All to WSL2" -Direction Inbound -Action Allow -LocalAddress $WSL_IP -Protocol Any -Profile Any -Enabled True
@@ -58,24 +58,24 @@ jobs:
           wsl echo -e "\n\n\nRoute list:"
           wsl -u root ip route show
           wsl echo -e "\n\n\nPinging alpha:"
-          wsl -u root ping -c 5 10.1.0.42
+          wsl -u root ping -c 5 10.21.0.42
           wsl echo -e "\n\n\nPinging beta:"
-          wsl -u root ping -c 5 10.1.0.24
+          wsl -u root ping -c 5 10.21.0.24
           wsl echo -e "\n\n\nConnecting to alpha:"
-          wsl -u root nc -vz 10.1.0.42 80
+          wsl -u root nc -vz 10.21.0.42 80
           wsl echo -e "\n\n\nConnecting to beta:"
-          wsl -u root nc -vz 10.1.0.24 80
+          wsl -u root nc -vz 10.21.0.24 80
           wsl echo -e "\n\n\nDownloading from alpha:"
-          wsl -u root curl -I 10.1.0.42:80
+          wsl -u root curl -I 10.21.0.42:80
           wsl echo -e "\n\n\nDownloading from beta:"
-          wsl -u root curl -I 10.1.0.24:80
+          wsl -u root curl -I 10.21.0.24:80
           wsl echo -e "\n\n\nGetting route to alpha from Windows:"
-          Find-NetRoute -RemoteIPAddress 10.1.0.42
+          Find-NetRoute -RemoteIPAddress 10.21.0.42
           wsl echo -e "\n\n\nGetting routes to the compose network from Windows:"
-          route print 10.1.0.0
+          route print 10.21.0.0
           wsl echo -e "\n\n\nPinging alpha from Windows:"
-          ping -n 5 10.1.0.42
+          ping -n 5 10.21.0.42
           wsl echo -e "\n\n\nDownloading from alpha from Windows:"
-          Invoke-WebRequest -Uri http://10.1.0.42:80 -Method Head
+          Invoke-WebRequest -Uri http://10.21.0.42:80 -Method Head
           wsl echo -e "\n\n\nWSL firewall logs:"
           wsl -u root journalctl -k | grep "TEST"
