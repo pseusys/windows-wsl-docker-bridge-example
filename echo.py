@@ -17,7 +17,7 @@ logger.addHandler(handler)
 
 # Start tcpdump and listen to packets on the default interface.
 process = Popen(
-    ["tcpdump", "-l", "-n", "-i", "any", "-vv"],
+    ["tcpdump", "-l", "-n", "-i", "any", "-v"],
     stdout=stdout,
     stderr=stderr,
     text=True,
