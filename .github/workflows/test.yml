@@ -66,6 +66,16 @@ jobs:
           try { (New-Object Net.Sockets.TcpClient).Connect("10.21.0.42", 5000) } catch { Write-Output "Invoke-WebRequest failed..." }
           wsl echo -e "\n\n\nInterface counters:"
           wsl -u root ip -s link show
+          wsl echo -e "Docker journal logs:"
+          wsl -u root journalctl -u docker
+          wsl echo -e "\n\n\nDocker network list:"
+          wsl -u root docker network ls
+          wsl echo -e "\n\n\nDocker container list:"
+          wsl -u root docker compose -f $COMPOSE_PATH ps
+          wsl echo -e "\n\n\nIP address list:"
+          wsl -u root ip addr show
+          wsl echo -e "\n\n\nRoute list:"
+          wsl -u root ip route show
           wsl echo -e "\n\n\nIptables filter table logs:"
           wsl -u root iptables -t filter -L -v -n
           wsl echo -e "\n\n\nIptables nat table logs:"
