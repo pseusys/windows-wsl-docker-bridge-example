@@ -51,18 +51,6 @@ jobs:
           wsl -u root docker network ls
           wsl echo -e "\n\n\nDocker container list:"
           wsl -u root docker compose -f $COMPOSE_PATH ps
-          wsl echo -e "\n\n\nIP address list:"
-          wsl -u root ip addr show
-          wsl echo -e "\n\n\nRoute list:"
-          wsl -u root ip route show
-          wsl echo -e "\n\n\nPinging alpha:"
-          wsl -u root ping -c 5 10.21.0.42
-          wsl echo -e "\n\n\nPinging beta:"
-          wsl -u root ping -c 5 10.21.0.24
-          wsl echo -e "\n\n\nConnecting to alpha:"
-          wsl -u root nc -vz 10.21.0.42 5000
-          wsl echo -e "\n\n\nConnecting to beta:"
-          wsl -u root nc -vz 10.21.0.24 5000
           wsl echo -e "\n\n\nGetting route to alpha from Windows:"
           Find-NetRoute -RemoteIPAddress 10.21.0.42
           wsl echo -e "\n\n\nGetting routes to the compose network from Windows:"
@@ -75,3 +63,17 @@ jobs:
           wsl -u root journalctl -k | grep "TEST"
           wsl echo -e "\n\n\nDocker compose logs:"
           wsl -u root docker compose -f $COMPOSE_PATH logs
+
+
+#          wsl echo -e "\n\n\nIP address list:"
+#          wsl -u root ip addr show
+#          wsl echo -e "\n\n\nRoute list:"
+#          wsl -u root ip route show
+#          wsl echo -e "\n\n\nPinging alpha:"
+#          wsl -u root ping -c 5 10.21.0.42
+#          wsl echo -e "\n\n\nPinging beta:"
+#          wsl -u root ping -c 5 10.21.0.24
+#          wsl echo -e "\n\n\nConnecting to alpha:"
+#          wsl -u root nc -vz 10.21.0.42 5000
+#          wsl echo -e "\n\n\nConnecting to beta:"
+#          wsl -u root nc -vz 10.21.0.24 5000
