@@ -56,8 +56,6 @@ jobs:
           wsl -u root ip route show
           wsl echo -e "\n\n\nGetting route to alpha from Windows:"
           Find-NetRoute -RemoteIPAddress 10.21.0.42
-          wsl echo -e "Docker file logs:"
-          wsl -u root cat /var/log/docker.log
           wsl echo -e "Docker journal logs:"
           wsl -u root journalctl -u docker
           wsl echo -e "All the journal logs:"
@@ -66,12 +64,12 @@ jobs:
           try { (New-Object Net.Sockets.TcpClient).Connect("10.21.0.42", 5000) } catch { Write-Output "Invoke-WebRequest failed..." }
           wsl echo -e "\n\n\nInterface counters:"
           wsl -u root ip -s link show
-          wsl echo -e "Docker file logs:"
-          wsl -u root cat /var/log/docker.log
           wsl echo -e "Docker journal logs:"
           wsl -u root journalctl -u docker
           wsl echo -e "All the journal logs:"
           wsl -u root journalctl -b
+          wsl echo -e "All the kernel logs:"
+          wsl -u root journalctl -k
           wsl echo -e "\n\n\nDocker network list:"
           wsl -u root docker network ls
           wsl echo -e "\n\n\nDocker container list:"
