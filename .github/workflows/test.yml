@@ -47,6 +47,8 @@ jobs:
         run: |
           $WSL_IP = (wsl -u root hostname -I).Split()[0].Trim()
           $COMPOSE_PATH = (wsl wslpath -a .\\compose.yml).Trim()
+          wsl echo -e "\n\n\nConnecting to alpha:"
+          wsl -u root nc -vz 10.21.0.42 5000
           wsl echo -e "\n\n\nDocker network list:"
           wsl -u root docker network ls
           wsl echo -e "\n\n\nDocker container list:"
