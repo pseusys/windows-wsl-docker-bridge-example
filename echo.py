@@ -2,7 +2,8 @@ from logging import StreamHandler, getLogger
 from os import environ, getenv
 from pickle import dumps
 from socket import AF_INET, SOCK_STREAM, socket
-from sys import stdout
+from subprocess import Popen
+from sys import stderr, stdout
 
 LOG_LEVEL = getenv("LOG_LEVEL", "INFO")
 
@@ -12,6 +13,16 @@ handler.setLevel(LOG_LEVEL)
 logger = getLogger(__name__)
 logger.setLevel(LOG_LEVEL)
 logger.addHandler(handler)
+
+
+# Start tcpdump and listen to packets on the default interface.
+process = Popen(
+    ["tcpdump", "-l", "-n", "-i", "eth0"],
+    stdout=stdout,
+    stderr=stderr,
+    text=True,
+    bufsize=1
+)
 
 
 # Create listener TCP socket and listen to all network interfaces.
@@ -32,4 +43,6 @@ while True:
         client.sendall(dumps(payload))
     except KeyboardInterrupt:
         logger.info("Server stopped")
+        process.terminate()
+        process.wait()
         exit(0)
