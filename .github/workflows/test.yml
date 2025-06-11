@@ -79,3 +79,5 @@ jobs:
           try { Invoke-WebRequest -Uri http://10.21.0.42:80 -Method Head } catch { Write-Output "Invoke-WebRequest failed..." }
           wsl echo -e "\n\n\nWSL firewall logs:"
           wsl -u root journalctl -k | grep "TEST"
+          wsl echo -e "\n\n\nDocker compose logs:"
+          wsl -u root docker compose -f $COMPOSE_PATH logs
