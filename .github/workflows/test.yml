@@ -58,6 +58,8 @@ jobs:
           Find-NetRoute -RemoteIPAddress 10.21.0.42
           wsl echo -e "Docker journal logs:"
           wsl -u root journalctl -u docker
+          wsl echo -e "All the journal logs:"
+          wsl -u root journalctl -b
           wsl echo -e "\n\n\nDownloading from alpha from Windows:"
           try { (New-Object Net.Sockets.TcpClient).Connect("10.21.0.42", 5000) } catch { Write-Output "Invoke-WebRequest failed..." }
           wsl echo -e "\n\n\nInterface counters:"
