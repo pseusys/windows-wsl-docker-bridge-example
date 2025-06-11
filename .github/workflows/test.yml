@@ -47,8 +47,6 @@ jobs:
         run: |
           $WSL_IP = (wsl -u root hostname -I).Split()[0].Trim()
           $COMPOSE_PATH = (wsl wslpath -a .\\compose.yml).Trim()
-          wsl echo -e "\n\n\nConnecting to alpha:"
-          wsl -u root nc -vz 10.21.0.42 5000
           wsl echo -e "\n\n\nDocker network list:"
           wsl -u root docker network ls
           wsl echo -e "\n\n\nDocker container list:"
@@ -64,7 +62,8 @@ jobs:
           wsl echo -e "All the journal logs:"
           wsl -u root journalctl -b
           wsl echo -e "\n\n\nDownloading from alpha from Windows:"
-          try { (New-Object Net.Sockets.TcpClient).Connect("10.21.0.42", 5000) } catch { Write-Output "Invoke-WebRequest failed..." }
+          wsl echo -e "\n\n\nPinging alpha from Windows:"
+          ping -n 5 10.21.0.42
           wsl echo -e "\n\n\nInterface counters:"
           wsl -u root ip -s link show
           wsl echo -e "Docker journal logs:"
@@ -89,10 +88,11 @@ jobs:
           wsl -u root journalctl -k | grep "TEST"
           wsl echo -e "\n\n\nDocker compose logs:"
           wsl -u root docker compose -f $COMPOSE_PATH logs
-          
-          %LOCALAPPDATA%\Packages\
 
 
+
+
+#          try { (New-Object Net.Sockets.TcpClient).Connect("10.21.0.42", 5000) } catch { Write-Output "Invoke-WebRequest failed..." }
 #          wsl echo -e "\n\n\nGetting routes to the compose network from Windows:"
 #          route print 10.21.0.0
 #          wsl echo -e "\n\n\nPinging alpha:"
