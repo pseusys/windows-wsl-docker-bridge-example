@@ -1,12 +1,14 @@
 services:
   alpha:
-    image: ealen/echo-server:0.9.2
+    build:
+      dockerfile: Dockerfile
     networks:
       bridge-net:
         ipv4_address: 10.21.0.42
   
   beta:
-    image: ealen/echo-server:0.9.2
+    build:
+      dockerfile: Dockerfile
     networks:
       bridge-net:
         ipv4_address: 10.21.0.24

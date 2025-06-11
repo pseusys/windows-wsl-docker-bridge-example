@@ -19,8 +19,6 @@ jobs:
         with:
           distribution: Ubuntu-24.04
           set-as-default: true
-          additional-packages:
-            tcpdump
 
       - name: Post-Configure WSL
         run: |
@@ -62,13 +60,9 @@ jobs:
           wsl echo -e "\n\n\nPinging beta:"
           wsl -u root ping -c 5 10.21.0.24
           wsl echo -e "\n\n\nConnecting to alpha:"
-          wsl -u root nc -vz 10.21.0.42 80
+          wsl -u root nc -vz 10.21.0.42 5000
           wsl echo -e "\n\n\nConnecting to beta:"
-          wsl -u root nc -vz 10.21.0.24 80
-          wsl echo -e "\n\n\nDownloading from alpha:"
-          wsl -u root curl -I 10.21.0.42:80
-          wsl echo -e "\n\n\nDownloading from beta:"
-          wsl -u root curl -I 10.21.0.24:80
+          wsl -u root nc -vz 10.21.0.24 5000
           wsl echo -e "\n\n\nGetting route to alpha from Windows:"
           Find-NetRoute -RemoteIPAddress 10.21.0.42
           wsl echo -e "\n\n\nGetting routes to the compose network from Windows:"
@@ -76,7 +70,7 @@ jobs:
           wsl echo -e "\n\n\nPinging alpha from Windows:"
           ping -n 5 10.21.0.42
           wsl echo -e "\n\n\nDownloading from alpha from Windows:"
-          try { (New-Object Net.Sockets.TcpClient).Connect("10.21.0.42", 80) } catch { Write-Output "Invoke-WebRequest failed..." }
+          try { (New-Object Net.Sockets.TcpClient).Connect("10.21.0.42", 5000) } catch { Write-Output "Invoke-WebRequest failed..." }
           wsl echo -e "\n\n\nWSL firewall logs:"
           wsl -u root journalctl -k | grep "TEST"
           wsl echo -e "\n\n\nDocker compose logs:"
