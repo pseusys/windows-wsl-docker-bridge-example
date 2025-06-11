@@ -38,6 +38,10 @@ jobs:
             wsl -u root iptables -t filter -A DOCKER-USER -d $LOCAL_IP -s 10.21.0.0/24 -j ACCEPT
             wsl -u root iptables -t nat -A POSTROUTING -s $LOCAL_IP -d 10.21.0.0/24 -j LOG --log-prefix "TEST MASQUERADE: "
             wsl -u root iptables -t nat -A POSTROUTING -s $LOCAL_IP -d 10.21.0.0/24 -j MASQUERADE
+            New-NetFirewallRule -DisplayName "Allow All to WSL2" -Direction Inbound -Action Allow -RemoteAddress $WSL_IP -Protocol Any -Profile Any -Enabled True
+            New-NetFirewallRule -DisplayName "Allow All to WSL2" -Direction Outbound -Action Allow -RemoteAddress $WSL_IP -Protocol Any -Profile Any -Enabled True
+            New-NetFirewallRule -DisplayName "Allow All to WSL2" -Direction Inbound -Action Allow -LocalAddress $WSL_IP -Protocol Any -Profile Any -Enabled True
+            New-NetFirewallRule -DisplayName "Allow All to WSL2" -Direction Outbound -Action Allow -LocalAddress $WSL_IP -Protocol Any -Profile Any -Enabled True
 
       - name: TEST STEP
         run: |
