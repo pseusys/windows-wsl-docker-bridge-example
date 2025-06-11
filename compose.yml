@@ -2,6 +2,8 @@ services:
   alpha:
     build:
       dockerfile: Dockerfile
+    environment:
+      LOG_LEVEL: DEBUG
     networks:
       bridge-net:
         ipv4_address: 10.21.0.42
@@ -9,6 +11,8 @@ services:
   beta:
     build:
       dockerfile: Dockerfile
+    environment:
+      LOG_LEVEL: DEBUG
     networks:
       bridge-net:
         ipv4_address: 10.21.0.24
