@@ -64,6 +64,8 @@ jobs:
           wsl -u root ip -s link show
           wsl echo -e "Docker journal logs:"
           wsl -u root journalctl -u docker
+          wsl echo -e "All the journal logs:"
+          wsl -u root journalctl -b
           wsl echo -e "\n\n\nDocker network list:"
           wsl -u root docker network ls
           wsl echo -e "\n\n\nDocker container list:"
