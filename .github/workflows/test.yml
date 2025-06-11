@@ -29,6 +29,7 @@ jobs:
             wsl -u root sh -c "curl -fsSL https://get.docker.com | sh"
             wsl -u root docker compose -f $COMPOSE_PATH up --build --detach
             route add 10.21.0.0 mask 255.255.255.0 $WSL_IP
+            wsl -u root iptables -t filter -I DOCKER-ISOLATION-STAGE-2 -j RETURN
             wsl -u root iptables -t filter -A DOCKER-USER -s $LOCAL_IP -d 10.21.0.0/24 -j LOG --log-prefix "TEST ACCEPT FORWARD: "
             wsl -u root iptables -t filter -A DOCKER-USER -s $LOCAL_IP -d 10.21.0.0/24 -j ACCEPT
             wsl -u root iptables -t filter -A DOCKER-USER -d $LOCAL_IP -s 10.21.0.0/24 -j LOG --log-prefix "TEST ACCEPT BACKWARD: "
