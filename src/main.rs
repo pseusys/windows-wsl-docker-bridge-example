@@ -14,6 +14,7 @@ type DynResult<T> = Result<T, Box<dyn Error + Sync + Send>>;
 async fn test_internet_access(number: usize, address: Ipv4Addr, port: u16, local: Option<Ipv4Addr>) -> DynResult<()> {
     debug!("TEST BLOCK {number} STARTED");
     let peer_address = SocketAddr::new(IpAddr::V4(address), port);
+
     let socket = Socket::new(Domain::IPV4, Type::STREAM, Some(Protocol::TCP))?.into();
     let connection_socket = TcpSocket::from_std_stream(socket);
 
@@ -26,7 +27,9 @@ async fn test_internet_access(number: usize, address: Ipv4Addr, port: u16, local
     debug!("Connecting to listener at {}", peer_address);
     let connection_stream = connection_socket.connect(peer_address).await?;
     debug!("Current user address: {}", connection_stream.local_addr()?);
+
     debug!("TEST BLOCK {number} ENDED");
+    Ok(())
 }
 
 
