@@ -11,7 +11,7 @@ use windivert::prelude::WinDivertFlags;
 type DynResult<T> = Result<T, Box<dyn Error + Sync + Send>>;
 
 
-async fn test_internet_access(number: usize, address: Ipv4Addr, port: u16, local: Option<Ipv4Addr>) {
+async fn test_internet_access(number: usize, address: Ipv4Addr, port: u16, local: Option<Ipv4Addr>) -> DynResult<()> {
     debug!("TEST BLOCK {number} STARTED");
     let peer_address = SocketAddr::new(IpAddr::V4(address), port);
     let socket = Socket::new(Domain::IPV4, Type::STREAM, Some(Protocol::TCP))?.into();
@@ -40,7 +40,7 @@ async fn main() -> DynResult<()> {
 
     let filter = format!("false");  // Add any filter string here
     debug!("WinDivert filter will be used: '{filter}'");
-    let divert = WinDivert::network(filter, 0, WinDivertFlags::new())?;
+    let mut divert = WinDivert::network(filter, 0, WinDivertFlags::new())?;
 
     info!("Testing internet connection with WinDivert...");
     test_internet_access(2, test_ip, test_port, None).await;
