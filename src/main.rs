@@ -12,7 +12,7 @@ use windivert::prelude::WinDivertFlags;
 type DynResult<T> = Result<T, Box<dyn Error + Sync + Send>>;
 
 
-async fn test_internet_access(number: usize, address: IpAddr, port: u16, local: Option<Ipv4Addr>) -> DynResult<()> {
+async fn test_internet_access(number: usize, address: IpAddr, port: u16, local: Option<IpAddr>) -> DynResult<()> {
     debug!("TEST BLOCK {number} STARTED");
     let peer_address = SocketAddr::new(address, port);
 
@@ -38,8 +38,8 @@ async fn test_internet_access(number: usize, address: IpAddr, port: u16, local: 
 async fn main() -> DynResult<()> {
     init();
     let test_port = 80;
-    let test_host = format!("example.com:{port}");
-    let test_ip = lookup_host(test_host).await?.next().map(|a| a.ip()).ok_or_else(|| Error::new("No IP found"))?;
+    let test_host = format!("example.com:{test_port}");
+    let test_ip = lookup_host(test_host).await?.next().ok_or("No IP address found")?.ip();
 
     info!("Testing internet connection without WinDivert...");
     test_internet_access(1, test_ip, test_port, None).await?;
