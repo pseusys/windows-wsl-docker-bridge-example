@@ -1,0 +1,14 @@
+[package]
+name = "SeasideVPN-Reef"
+version = "0.0.3"
+edition = "2021"
+description = "A production-ready SeasideVPN client for Linux and Windows"
+authors = [
+    "Alexander Sergeev <alexander.sergeev@onmail.com>"
+]
+
+[dependencies]
+tokio = { version = "^1.45.0", features = ["full"] }
+log = "^0.4.22"
+socket2 = "^0.5.9"
+windivert = "^0.6.0"
