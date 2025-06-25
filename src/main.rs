@@ -1,11 +1,13 @@
 use std::net::SocketAddr;
-use std::net::Ipv4Addr;
+use std::net::{IpAddr, Ipv4Addr};
 
 use log::{debug, info};
 use socket2::{Domain, Protocol, Socket, Type};
 use tokio::net::TcpSocket;
 use windivert::{CloseAction, WinDivert};
-use windivert::packet::WinDivertPacket;
+use windivert::prelude::WinDivertFlags;
+
+type DynResult<T> = Result<T, Box<dyn Error + Sync + Send>>;
 
 
 async fn test_internet_access(number: usize, address: Ipv4Addr, port: u16, local: Option<Ipv4Addr>) {
@@ -33,15 +35,16 @@ async fn main() -> DynResult<()> {
     let test_port = 80;
 
     info!("Testing internet connection without WinDivert...");
-    test_internet_access(1, test_ip, test_port, None);
+    test_internet_access(1, test_ip, test_port, None).await;
 
     let filter = format!("false");  // Add any filter string here
     debug!("WinDivert filter will be used: '{filter}'");
     let divert = WinDivert::network(filter, 0, WinDivertFlags::new())?;
 
     info!("Testing internet connection with WinDivert...");
-    test_internet_access(2, test_ip, test_port, None);
+    test_internet_access(2, test_ip, test_port, None).await;
 
     debug!("Closing WinDivert...");
-    divert.close(CloseAction::Nothing);
+    divert.close(CloseAction::Nothing)?;
+    Ok(())
 }
