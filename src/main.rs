@@ -1,6 +1,6 @@
 use std::error::Error;
 use std::net::SocketAddr;
-use std::net::{IpAddr, Ipv4Addr};
+use std::net::IpAddr;
 
 use env_logger::init;
 use log::{debug, info};
