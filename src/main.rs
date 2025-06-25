@@ -2,6 +2,7 @@ use std::error::Error;
 use std::net::SocketAddr;
 use std::net::{IpAddr, Ipv4Addr};
 
+use env_logger::init;
 use log::{debug, info};
 use socket2::{Domain, Protocol, Socket, Type};
 use tokio::net::TcpSocket;
@@ -35,6 +36,7 @@ async fn test_internet_access(number: usize, address: Ipv4Addr, port: u16, local
 
 #[tokio::main]
 async fn main() -> DynResult<()> {
+    init();
     let test_ip = Ipv4Addr::new(8, 8, 4, 4);
     let test_port = 80;
 

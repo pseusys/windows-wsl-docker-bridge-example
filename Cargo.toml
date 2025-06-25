@@ -1,14 +1,13 @@
 [package]
-name = "SeasideVPN-Reef"
+name = "testproj"
 version = "0.0.3"
 edition = "2021"
-description = "A production-ready SeasideVPN client for Linux and Windows"
-authors = [
-    "Alexander Sergeev <alexander.sergeev@onmail.com>"
-]
+description = "WinDivert library test in Rust"
+authors = ["Alexander Sergeev <alexander.sergeev@onmail.com>"]
 
 [dependencies]
-tokio = { version = "^1.45.0", features = ["full"] }
+env_logger = "^0.11.5"
 log = "^0.4.22"
 socket2 = "^0.5.9"
+tokio = { version = "^1.45.0", features = ["full"] }
 windivert = "^0.6.0"

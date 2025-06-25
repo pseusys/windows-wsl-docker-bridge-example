@@ -26,5 +26,6 @@ jobs:
 
       - name: Run Test
         env:
+          SEASIDE_LOG_LEVEL: testproj=DEBUG,INFO
           WINDIVERT_PATH: ${{ github.workspace }}/windivert-bin
         run: cargo run
