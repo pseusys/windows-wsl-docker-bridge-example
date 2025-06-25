@@ -39,14 +39,14 @@ async fn main() -> DynResult<()> {
     let test_port = 80;
 
     info!("Testing internet connection without WinDivert...");
-    test_internet_access(1, test_ip, test_port, None).await;
+    test_internet_access(1, test_ip, test_port, None).await?;
 
     let filter = format!("false");  // Add any filter string here
     debug!("WinDivert filter will be used: '{filter}'");
     let mut divert = WinDivert::network(filter, 0, WinDivertFlags::new())?;
 
     info!("Testing internet connection with WinDivert...");
-    test_internet_access(2, test_ip, test_port, None).await;
+    test_internet_access(2, test_ip, test_port, None).await?;
 
     debug!("Closing WinDivert...");
     divert.close(CloseAction::Nothing)?;
